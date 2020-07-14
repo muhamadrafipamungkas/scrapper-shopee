@@ -1,10 +1,18 @@
-import sys
 from scrapper import ScrapperShopee
 
-inp = sys.argv
-if(len(inp) == 1):
-    print("Harap sertakan link produk Shopee")
-else:
-    coba = ScrapperShopee(str(inp[1]))
-    coba.getPrice()
-
+if __name__ == "__main__":
+    filepath = 'link.txt'
+    with open(filepath) as fp:
+        line = fp.readline()
+        counter = 1
+        while line:
+            try:
+                print(line)
+                coba = ScrapperShopee(line, counter)
+                coba.getPrice()
+                line = fp.readline()
+                counter += 1
+            except Exception as err:
+                print(err)
+                line = fp.readline()
+                counter += 1

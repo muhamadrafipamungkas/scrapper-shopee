@@ -4,13 +4,22 @@ import json
 class ScrapperShopee:
     url = None
     price = None
+    line = 0
 
     
-    def __init__(self, url):
+    def __init__(self, url, line):
         urllist = url.split(".")
-        itemid = urllist[-1]
-        shopid = urllist[-2]
-        self.url = "https://shopee.co.id/api/v2/item/get?itemid="+itemid+"&shopid="+shopid
+        if(len(urllist) == 5):
+            if(urllist[0].find('shopee') == -1):
+                raise Exception(("Link pada baris ke-{} tidak valid ! ! !").format(line))
+            else:
+                self.line = 0
+                self.line = line
+                itemid = urllist[-1]
+                shopid = urllist[-2]
+                self.url = "https://shopee.co.id/api/v2/item/get?itemid="+itemid+"&shopid="+shopid
+        else:
+            raise Exception("Link pada baris ke-"+self.line+" tidak valid ! ! !")
 
 
     def getPrice(self):
@@ -27,4 +36,4 @@ class ScrapperShopee:
             else:
                 print("Harga produk berkisar dari Rp "+harga_min+" sampai Rp "+harga_max)
         except:
-            print("Gagal")
+            raise Exception(("Produk pada baris ke-{} tidak tersedia ! ! !").format(self.line))
